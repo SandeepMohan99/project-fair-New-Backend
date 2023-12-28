@@ -39,5 +39,13 @@ const router = new express.Router()
     router.get('/user/all-project',jwtMiddleware,projectController.getUserProject)
 
 
+    // edit the project
+    router.put('/project/edit/:id',jwtMiddleware,multerConfig.single('projectImage'),projectController.editProject)
+
+
+    //delete the project
+    router.delete('/project/remove/:id',jwtMiddleware,projectController.deleteProject)
+
+
 //4) export router
 module.exports = router

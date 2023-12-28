@@ -71,3 +71,35 @@ exports.getUserProject = async(req,res)=>{
         res.status(401).json(`Request failed due to ${err}`)
     }
 }
+
+//editProject
+exports.editProject = async(req,res)=>{
+    const {id} = req.params
+    const userId = req.payload
+    const {title, language, github, website,overview,projectImage} = req.body
+    const uploadProjectImage = req.file?req.file.filename:projectImage
+
+    try{
+        const updateProject = await projects.findOneAndUpdate({_id:id,userId},{title,language,github,website,overview,projectImage:uploadProjectImage,userId},{new:true})
+        await updateProject.save()
+        res.status(200).json(updateProject)
+
+    }catch(err){
+        res.status(401).json(`Request failed due to ${err}`)
+    }
+
+}
+
+
+
+//delete project
+exports.deleteProject = async(req,res)=>{
+    const {id} = req.params
+    const userId = req.payload
+    try{
+        const removeProject = await projects.findOneAndDelete({_id:id})
+        res.status(200).json(removeProject)
+    }catch(err){
+        res.status(401).json(`Request failed due to ${err}`)
+    }
+}
